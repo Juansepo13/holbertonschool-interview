@@ -20,3 +20,4 @@ def canUnlockAll(boxes):
         if all_keys == sorted(recover_keys):
             return True
     return False
+
