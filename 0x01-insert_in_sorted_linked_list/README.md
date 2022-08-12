@@ -17,7 +17,7 @@ Cohort 16.
 
 ## Read or watch:
 
-![img1](https://user-images.githubusercontent.com/85587286/183459033-dbaec50c-5d50-4916-8151-2256a17b28c0.gif)
+![linked-list-insert](https://user-images.githubusercontent.com/85587286/183459033-dbaec50c-5d50-4916-8151-2256a17b28c0.gif)
 
 ## Extra resources around relational:
 
