@@ -1,37 +1,41 @@
 #include <stdlib.h>
 #include "binary_trees.h"
+
 /**
- * binary_tree_node - create a new tree
- * @parent:  pointer to the parent node of the node to create
- * @value: value to put in the new node
- * Return: pointer to the new node, or NULL on failure
+ * _binary_tree_delete - Deallocate a binary tree
+ *
+ * @tree: Pointer to the root of the tree to delete
  */
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value)
+static void _binary_tree_delete(binary_tree_t *tree)
 {
-	binary_tree_t *newNode;
+    if (tree)
+    {
+        _binary_tree_delete(tree->left);
+        _binary_tree_delete(tree->right);
+        free(tree);
+    }
+}
 
-	newNode = malloc(sizeof(binary_tree_t));
+/**
+ * main - Entry point
+ *
+ * Return: Always 0 (Success)
+ */
+int main(void)
+{
+    binary_tree_t *root;
 
-	if (newNode == NULL)
-		return (NULL);
+    root = binary_tree_node(NULL, 98);
 
-	newNode->n = value;
-	newNode->left = NULL;
-	newNode->right = NULL;
+    root->left = binary_tree_node(root, 12);
+    root->left->left = binary_tree_node(root->left, 6);
+    root->left->right = binary_tree_node(root->left, 16);
 
-	if (parent == NULL)
-	{
-		parent = newNode;
-		newNode->parent = NULL;
-		return (newNode);
-	}
-	if (parent->left == NULL)
-	{
-		newNode->parent = parent;
-		parent->left = newNode;
-		return (newNode);
-	}
-	newNode->parent = parent;
-	parent->right = newNode;
-	return (newNode);
+    root->right = binary_tree_node(root, 402);
+    root->right->left = binary_tree_node(root->right, 256);
+    root->right->right = binary_tree_node(root->right, 512);
+
+    binary_tree_print(root);
+    _binary_tree_delete(root);
+    return (0);
 }
