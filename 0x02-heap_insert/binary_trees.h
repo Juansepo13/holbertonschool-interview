@@ -20,5 +20,22 @@ typedef struct binary_tree_s
 } binary_tree_t;
 
 void binary_tree_print(const binary_tree_t *);
+typedef struct binary_tree_s heap_t;
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
+heap_t *heap_insert(heap_t **root, int value);
+heap_t *insert_last(heap_t *root, int value);
+
+/**
+* struct queue_s - Queue node.
+* @node: Heap node stored.
+* @next: Pointer to next node.
+*/
+
+typedef struct queue_s
+{
+	heap_t *node;
+	struct queue_s *next;
+} queue;
+queue *push(queue *last, heap_t *node);
 
 #endif /* _BINARY_TREES_H_ */

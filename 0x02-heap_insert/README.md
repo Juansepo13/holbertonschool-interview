@@ -59,5 +59,6 @@ typedef struct binary_tree_s heap_t;
 ## Author
 ***
 *Holberton School Student*
+![img_holberton](https://user-images.githubusercontent.com/85451781/140782830-f3f4a341-3d98-4a6e-89d2-76d684c80e9e.png)
 
 Juan Sebastian Posada  - [Github](https://github.com/Juansepo13) - [Twiter](https://twitter.com/@JuanSeb35904130)   
