@@ -1,42 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "lists.h"
+
 /**
- * is_palindrome - function to print a string with hexadecimal characaters
- * @head: Double pointer to the head nodo
- * Return: Return count
+ * is_palindrome - function main 
+ * @head: Pointer to the head of the list
+ * Return: 1 or 0
  */
 int is_palindrome(listint_t **head)
-{		  
-	listint_t *vodka = *head;	
-	listint_t *vino = *head;	
-	listint_t *ron = NULL;		
-	int count = 0;	
-	int ver = 0;	
+{
+	listint_t *tmp = *head;
+	int array[2048], i = 0, j = 0, middle;
 
-	if (*head == NULL)
+	if (head == NULL || (tmp != NULL && tmp->next == NULL))
 		return (1);
-	while (vino->next != NULL)	
-	{	
-		vino = vino->next;		
-		count += 1;		
-	}
-	 if (count % 2 != 0)
-	 {
-		 count -= 1;	
-	 }
-	while (ver < count/2)
+	while (tmp != NULL)
 	{
-		if (vodka->n != vino->n)	
-		{
-			return (0);	
-		}
-		vodka = vodka->next;
-		ron = vodka;
-		while (ron->next != vino)
-		{
-			ron = ron->next;	
-		}
-		vino = ron;	
-		ver++;		
-	}	
+		array[i] = tmp->n;
+		tmp = tmp->next;
+		i++;
+	}
+	i--, middle = i / 2;
+	while (i >= middle && j <= middle)
+	{
+		if (array[j] != array[i])
+			return (0);
+		i--, j++;
+	}
 	return (1);
 }
