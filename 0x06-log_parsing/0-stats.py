@@ -1,15 +1,47 @@
 #!/usr/bin/python3
-import random
-import sys
-from time import sleep
-import datetime
+"""
+Module that parses a log and prints stats to stdout
+"""
+from sys import stdin
 
-for i in range(10000):
-    sleep(random.random())
-    sys.stdout.write("{:d}.{:d}.{:d}.{:d} - [{}] \"GET /projects/260 HTTP/1.1\" {} {}\n".format(
-        random.randint(1, 255), random.randint(1, 255), random.randint(1, 255), random.randint(1, 255),
-        datetime.datetime.now(),
-        random.choice([200, 301, 400, 401, 403, 404, 405, 500]),
-        random.randint(1, 1024)
-    ))
-    sys.stdout.flush()
+status_codes = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0
+}
+
+size = 0
+
+
+def print_stats():
+    """Prints the accumulated logs"""
+    print("File size: {}".format(size))
+    for status in sorted(status_codes.keys()):
+        if status_codes[status]:
+            print("{}: {}".format(status, status_codes[status]))
+
+
+if __name__ == "__main__":
+    count = 0
+    try:
+        for line in stdin:
+            try:
+                items = line.split()
+                size += int(items[-1])
+                if items[-2] in status_codes:
+                    status_codes[items[-2]] += 1
+            except:
+                pass
+            if count == 9:
+                print_stats()
+                count = -1
+            count += 1
+    except KeyboardInterrupt:
+        print_stats()
+        raise
+    print_stats()
