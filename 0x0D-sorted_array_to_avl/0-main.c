@@ -38,4 +38,3 @@ int main(void)
     binary_tree_print(tree);
     return (0);
 }
-1
