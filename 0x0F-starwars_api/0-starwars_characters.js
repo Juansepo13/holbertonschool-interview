@@ -1,33 +1,31 @@
 #!/usr/bin/node
-/**
- * Star Wars API
- */
- const process = require('process');
- const request = require('request');
- 
- if (process.argv.length !== 3) {
-   process.exit(0);
- }
- 
- function requestCharacter (url) {
-   return new Promise((resolve, reject) => {
-     request(url, (error, response, body) => {
-       error ? reject(error.message) : resolve(JSON.parse(body));
-     });
-   });
- }
- 
- function requestApi () {
-   const url = `https://swapi-api.hbtn.io/api/films/${process.argv[2]}`;
-   request(url, async (error, response, body) => {
-     error && new Error(error.message);
-     const { characters } = JSON.parse(body);
-     for (const index in characters) {
-       await requestCharacter(characters[index])
-         .then((res) => console.log(res.name))
-         .catch((err) => console.log(err.message));
-     }
-   });
- }
- 
- requestApi();
+
+// Write a script that prints all characters of a Star Wars movie:
+// The first positional argument passed is the Movie ID - example: 3 = “Return of the Jedi”
+// Display one character name per line in the same order as the “characters” list in the /films/ endpoint
+// You must use the Star wars API
+// You must use the request module
+
+const request = require('request');
+
+const movieId = process.argv[2];
+const url = `https://swapi.dev/api/films/${movieId}/`;
+request(url, async function (error, response, body) {
+  if (error) {
+    console.log(error);
+  } else {
+    const characters = JSON.parse(body).characters;
+    for (const character of characters) {
+      const res = await new Promise((resolve, reject) => {
+        request(character, (error, res, html) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(JSON.parse(html).name);
+          }
+        });
+      });
+      console.log(res);
+    }
+  }
+});
