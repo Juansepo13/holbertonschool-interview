@@ -1,57 +1,39 @@
 #!/usr/bin/python3
 """
-Module contains function for solving
-prompted problem. Problem found in documentation.
+0-rain
 """
-
-
-def pop_ends(walls):
-    """
-    Pops zeros from the ends of the list.
-    """
-
-    if len(walls) == 0:
-        return walls
-
-    while walls[-1] == 0:
-        walls.pop(-1)
-
-    while walls[0] == 0:
-        walls.pop(0)
-
-    return walls
 
 
 def rain(walls):
     """
-    Problem Prompt:
-    Given a list of non-negative integers representing
-    the heights of walls with unit width 1, as if viewing
-    the cross-section of a relief map, calculate how many
-    square units of water will be retained after it rains.
-
-    Args:
-        walls: List of integers representing wall heights.
-
-    Return:
-        Integer indicating total amount of rainwater retained.
+    Calculate how many square units of water will be
+    retained after it rains
     """
-
-    walls = pop_ends(walls)
-
-    if len(walls) == 0:
+    if not isinstance(walls, list) or len(walls) <= 2:
         return 0
 
-    tot, cnt = 0, 0
-    left = walls[0]
+    tall, taller = 0, len(walls) - 1
 
-    for x, wall in enumerate(walls[1:]):
-        if wall == 0:
-            cnt += 1
-        else:
-            height = min(left, wall)
-            tot += (cnt * height)
-            left = wall
-            cnt = 0
+    # Find 2 tallest walls.
+    for i, wall in enumerate(walls):
+        if wall >= walls[tall]:
+            taller = tall
+            tall = i
+        elif wall > taller:
+            taller = i
 
-    return tot
+    # Check that there were 2 walls to retain rain.
+    if walls[tall] == 0 or walls[taller] == 0:
+        return 0
+
+    # Find the left, right position and size of walls
+    left = min((tall, taller))
+    right = max((tall, taller))
+    filler = sum(walls[left + 1: right])
+
+    # Calculate volume
+    height = min((walls[tall], walls[taller]))
+    width = right - left - 1
+    water = (height * width) - filler
+
+    return water + rain(walls[:left + 1]) + rain(walls[right:])
