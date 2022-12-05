@@ -1,4 +1,4 @@
-# 
+# 0x11. Heap Sort
 ***
 ## This is a README.md for the repository
 ### In GitHub [0x11-heap_sort]()
@@ -26,12 +26,7 @@ Cohort 16.
 | []() |	       |
 | []() |	       |
 | []() |	       |
-| []() |	       |
-| []() |	       |
-| []() |	       |
-| []() |	       |
-| []() |	       |
-| []() |	       |
+
 
 
 ## Author
