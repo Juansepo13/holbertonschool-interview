@@ -1,9 +1,11 @@
-#ifndef heap_sort_h
-#define heap_sort_h
+#ifndef SORT_H
+#define SORT_H
 
-#include <stdio.h>
 #include <stdlib.h>
-void heap_sort(int *array, size_t size);
-void print_array(const int *array, size_t size);
+#include <string.h>
+#include <stdio.h>
 
-#endif
+void print_array(const int *array, size_t size);
+void heap_sort(int *array, size_t size);
+
+#endif /* SORT_H */
