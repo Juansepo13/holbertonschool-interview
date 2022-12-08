@@ -1,76 +1,74 @@
 #include "sort.h"
 
+void swap(int *array, size_t a, size_t b);
+void sift_down(int array[], int root, int bottom, size_t size);
 
 /**
- * heap_sort - Build max heap
- * @array: array
- * @size: size of array
+ * heap_sort - function that implements a heap sort algorithm
+ * @array: The array to sort
+ * @size: Number of elements in @array
  */
 void heap_sort(int *array, size_t size)
 {
+	int i;
 
-	size_t i;
+	for (i = (size / 2); i >= 0; i--)
+	{
+		sift_down(array, i, size - 1, size);
+	}
 
-	if (array == NULL)
+	for (i = size - 1; i >= 1; i--)
+	{
+		swap(array, 0, i);
+		print_array(array, size);
+		sift_down(array, 0, i - 1, size);
+	}
+}
+
+/**
+ * swap - Function to swap elements
+ * @array: array to swap
+ * @a: swap element 1
+ * @b: swap element 2
+ */
+void swap(int *array, size_t a, size_t b)
+{
+	int tmp;
+
+	tmp = array[a];
+	array[a] = array[b];
+	array[b] = tmp;
+}
+
+/**
+ * sift_down - order according binary distribution
+ * @array: pointer to array
+ * @root: actual size
+ * @bottom: actual position
+ * @size: total size
+ */
+void sift_down(int array[], int root, int bottom, size_t size)
+{
+	int maxChild = root * 2 + 1, otherChild;
+
+	if (maxChild < bottom)
+	{
+		otherChild = maxChild + 1;
+		if (array[otherChild] > array[maxChild])
+			maxChild = otherChild;
+		else
+			maxChild = maxChild;
+	}
+	else
+	{
+		if (maxChild > bottom)
+			return;
+	}
+
+	if (array[root] >= array[maxChild])
 		return;
 
-	/* Build max heap */
-	for (i = size / 2 ; i > 0; i--)
-		heap_root(array, size, i - 1, size);
-
-	/* Heap sort */
-	for (i = size - 1; i > 0; i--)
-	{
-		swap(&array[0], &array[i], array, size);
-
-		/* Heapify root element to get highest element at root again */
-		heap_root(array, i, 0, size);
-	}
-}
-
-
-/**
- * heap_root - Find largest among root, left child and right chil
- * @arr: array
- * @n: size array
- * @i: current position
- * @size: size
- */
-void heap_root(int *arr, int n, int i, size_t size)
-{
-	/* Find largest among root, left child and right child */
-
-	int largest = i;
-	int left = 2 * i + 1;
-	int right = 2 * i + 2;
-
-	if (left < n && arr[left] > arr[largest])
-		largest = left;
-
-	if (right < n && arr[right] > arr[largest])
-		largest = right;
-
-	/* Swap and continue heapifying if root is not largest */
-	if (largest != i)
-	{
-		swap(&arr[i], &arr[largest], arr, size);
-		heap_root(arr, n, largest, size);
-	}
-
-}
-
-/**
- * swap - Function to swap the the position of two elements
- * @a: first integer
- * @b: second integer
- * @array: array of numbers
- * @n: size of array
- */
-void swap(int *a, int *b, int *array, size_t n)
-{
-
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-	print_array(array, n);
+	swap(array, root, maxChild);
+	print_array(array, size);
+	sift_down(array, maxChild, bottom, size);
 }
