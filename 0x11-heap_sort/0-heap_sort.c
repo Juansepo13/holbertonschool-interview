@@ -1,48 +1,63 @@
 #include "sort.h"
 /**
- * heap_sort - sorts an array of integers in ascending order
- * @array: array[]
- * @size: size of array
+ * _swap - swaps two integers
+ * @a: integer to swap
+ * @b: integer to swap
  */
-void heap_sort(int *array, size_t size)
+void _swap(int *a, int *b)
 {
-	size_t i;
-	int temp;
-
-	if (array == NULL)
-		return;
-
-	for (i = size / 2; i > 0; i--)
-		aux_function(array, size, i - 1, size);
-
-	for (i = size - 1; i > 0; i--)
-	{
-		temp = array[0], array[0] = array[i],  array[i] = temp;
-		print_array(array, size);
-		aux_function(array, i, 0, size);
-	}
+	*a = *a * *b;
+	*b = *a / *b;
+	*a = *a / *b;
 }
 
 /**
- * aux_function - aux_function recursive function to heap sort
- * @array: the array to sort
- * @n: variable size
- * @i: head
- * @size: size of array
+ * get_heap - turns an array into a max heap
+ * @array: array of integers to heapify
+ * @idx: current given index within array
+ * @size: size of the array
+ * @len: size to use as boundaries
  */
-void aux_function(int *array, int n, int i, int size)
+void get_heap(int *array, int idx, int size, int len)
 {
-	int l, left, right, temp;
+	int left = (idx * 2) + 1;
+	int right = (idx * 2) + 2;
+	int max = idx;
 
-	left = (2 * i) + 1;
-	right = (2 * i) + 2;
-	l = i;
-	left < n && array[left] > array[l] ? l = left : 0;
-	right < n && array[right] > array[l] ? l = right : 0;
-	if (l != i)
+	if (left > 0 && left < len && array[left] > array[max])
+		max = left;
+	if (right > 0 && right < len && array[right] > array[max])
+		max = right;
+	if (max != idx)
 	{
-		temp = array[i], array[i] = array[l], array[l] = temp;
+		_swap(array + max, array + idx);
 		print_array(array, size);
-		aux_function(array, n, l, size);
+		get_heap(array, max, size, len);
 	}
+}
+/**
+ * heap_sort - sorts an array of integers in ascending order using the Heap
+ * sort algorithm
+ * @array: array of integers to sort
+ * @size: size of the array
+ */
+void heap_sort(int *array, size_t size)
+{
+	int i = (size / 2) - 1;
+	int end = size - 1;
+
+	while (i >= 0)
+	{
+		get_heap(array, i, size, size);
+		i--;
+	}
+
+	while (end > 0)
+	{
+		_swap(array + end, array);
+		print_array(array, size);
+		get_heap(array, 0, size, end);
+		end--;
+	}
+
 }
