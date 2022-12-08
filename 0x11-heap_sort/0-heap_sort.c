@@ -1,63 +1,152 @@
 #include "sort.h"
-/**
- * _swap - swaps two integers
- * @a: integer to swap
- * @b: integer to swap
- */
-void _swap(int *a, int *b)
-{
-	*a = *a * *b;
-	*b = *a / *b;
-	*a = *a / *b;
-}
 
 /**
- * get_heap - turns an array into a max heap
- * @array: array of integers to heapify
- * @idx: current given index within array
+ * heap_sort - sort an array of integers in ascending order
+ * with sift-down heap sort algorithm
+ * @array: array to sort
  * @size: size of the array
- * @len: size to use as boundaries
+ *
+ * Return: void
  */
-void get_heap(int *array, int idx, int size, int len)
-{
-	int left = (idx * 2) + 1;
-	int right = (idx * 2) + 2;
-	int max = idx;
 
-	if (left > 0 && left < len && array[left] > array[max])
-		max = left;
-	if (right > 0 && right < len && array[right] > array[max])
-		max = right;
-	if (max != idx)
-	{
-		_swap(array + max, array + idx);
-		print_array(array, size);
-		get_heap(array, max, size, len);
-	}
-}
-/**
- * heap_sort - sorts an array of integers in ascending order using the Heap
- * sort algorithm
- * @array: array of integers to sort
- * @size: size of the array
- */
 void heap_sort(int *array, size_t size)
 {
-	int i = (size / 2) - 1;
-	int end = size - 1;
+	int heapify = 0;
+	size_t i, child_a, child_b;
 
-	while (i >= 0)
+	if (array == NULL || size < 2)
+		return;
+	while (heapify == 0)
 	{
-		get_heap(array, i, size, size);
-		i--;
+		for (i = size - 1; i > 0; i--)
+		{
+			child_a = (2 * i) + 1, child_b = (2 * i) + 2;
+			if (child_a <= size - 1 && child_b >= size)
+			{
+				if (array[i] < array[child_a])
+					swap(array, i, child_a, size);
+			}
+			else if (child_b <= size - 1 && child_a <= size - 1)
+			{
+				if (array[child_a] > array[i] || array[child_b] > array[i])
+				{
+					if (array[child_a] > array[child_b])
+						swap(array, i, child_a, size);
+					else
+						swap(array, i, child_b, size);
+				}
+			}
+		}
+		for (i = size - 1; i > 0; i--)
+		{
+			child_a = (2 * i) + 1, child_b = (2 * i) + 2;
+			if (child_a <= size - 1 && child_b >= size)
+			{
+				if (array[i] < array[child_a])
+					break;
+			}
+			else if (child_b <= size - 1 && child_a <= size - 1)
+			{
+				if (array[child_a] > array[i] || array[child_b] > array[i])
+					break;
+			}
+		}
+		if (i == 0)
+			heapify = 1;
 	}
+	shift_down(array, size, size);
+}
 
-	while (end > 0)
+
+/**
+ * swap - swap two elements of an array
+ * @array: array to swap
+ * @i: index of the first element
+ * @child: child to change
+ *
+ * Return: void
+ */
+
+void swap(int *array, size_t i, size_t child, size_t total_size)
+{
+	int tmp;
+
+	tmp = array[i];
+	array[i] = array[child];
+	array[child] = tmp;
+	print_array(array, total_size);
+}
+
+/**
+ * shift_down - shift down an element of an array
+ * @array: array to shift down
+ * @size: size of the array
+ *
+ * Return: void
+ */
+
+void shift_down(int *array, size_t size, size_t total_size)
+{
+	size_t i, child_a, child_b, check = 0;
+
+	for (i = 0; i < size - 1; i++)
 	{
-		_swap(array + end, array);
-		print_array(array, size);
-		get_heap(array, 0, size, end);
-		end--;
+		child_a = (2 * i) + 1, child_b = (2 * i) + 2;
+		if (child_a <= size - 1 && child_b >= size)
+		{
+			if (array[i] < array[child_a])
+				swap(array, i, child_a, total_size);
+		}
+		else if (child_b <= size - 1 && child_a <= size - 1)
+		{
+			if (array[child_a] > array[i] || array[child_b] > array[i])
+			{
+				if (array[child_a] > array[child_b])
+					swap(array, i, child_a, total_size);
+				else
+					swap(array, i, child_b, total_size);
+			}
+		}
 	}
+	for (i = 0; i < size - 1; i++)
+	{
+		child_a = (2 * i) + 1, child_b = (2 * i) + 2;
+		if (child_a <= size - 1 && child_b >= size)
+		{
+			if (array[i] < array[child_a])
+				break;
+		}
+		else if (child_b <= size - 1 && child_a <= size - 1)
+		{
+			if (array[child_a] > array[i] || array[child_b] > array[i])
+				break;
+		}
+	}
+	if (i != size - 1)
+		shift_down(array, size, total_size);
+	swap(array, 0, size - 1, total_size);
+	check = check_array(array, total_size);
+	if (check == 1 || size > 2)
+		shift_down(array, size - 1, total_size);
+}
 
+
+/**
+ * check_array - check if an array is sorted
+ * @array: array to check
+ * @size: size of the array
+ *
+ * Return: 0 if the array is sorted, 1 otherwise
+ */
+
+int check_array(int *array, size_t size)
+{
+	size_t i;
+
+	for (i = 0; i < size - 1; i++)
+	{
+		if (array[i] > array[i + 1])
+			return (1);
+	}
+	return (0);
 }

@@ -1,11 +1,20 @@
-#ifndef _H_HEAP
-#define _H_HEAP
+#ifndef _SORT_H_
+#define _SORT_H_
 
-#include <stdio.h>
+
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-void heap_sort(int *array, size_t size);
-void aux_function(int *array, int n, int i, int size);
+
+
 void print_array(const int *array, size_t size);
+void heap_sort(int *array, size_t size);
+void swap(int *array, size_t i, size_t child, size_t total_size);
+int heapify_down(int *array, size_t size);
+void shift_down(int *array, size_t size, size_t total_size);
+int check_array(int *array, size_t total_size);
 
-#endif /* _H_HEAP */
+
+
+#endif
