@@ -1,51 +1,74 @@
 #include "sort.h"
 
-void heapify(int *array, size_t size, long int i, long int s);
+void swap(int *array, size_t a, size_t b);
+void sift_down(int array[], int root, int bottom, size_t size);
 
 /**
- * heap_sort - Function that sorts an array of integers in ascending order
- * using the "sift-down" Heap sort algorithm.
- * @array: Array to be sorted
- * @size: Size of Array
+ * heap_sort - function that implements a heap sort algorithm
+ * @array: The array to sort
+ * @size: Number of elements in @array
  */
 void heap_sort(int *array, size_t size)
 {
-	long int i, aux;
+	int i;
 
-	for (i = (size / 2) - 1; i >= 0; i--)
-		heapify(array, size, i, size);
-
-	for (i = size - 1; i > 0; i--)
+	for (i = (size / 2); i >= 0; i--)
 	{
-		aux = array[0];
-		array[0] = array[i];
-		array[i] = aux;
+		sift_down(array, i, size - 1, size);
+	}
+
+	for (i = size - 1; i >= 1; i--)
+	{
+		swap(array, 0, i);
 		print_array(array, size);
-		heapify(array, size, 0, i);
+		sift_down(array, 0, i - 1, size);
 	}
 }
 
 /**
- * heapify - order the tree - max heap
- * @array: Array to be sorted
- * @size: Size of Array
- * @i: index to start ordering the heap
- * @s: new size for ordering the heap
+ * swap - Function to swap elements
+ * @array: array to swap
+ * @a: swap element 1
+ * @b: swap element 2
  */
-void heapify(int *array, size_t size, long int i, long int s)
+void swap(int *array, size_t a, size_t b)
 {
-	long int j, max = i, aux;
+	int tmp;
 
-	for (j = 1; j < 3 && s > (2 * i) + j; j++)
-		if (array[i] < array[(2 * i) + j] && array[max] < array[(2 * i) + j])
-			max = (2 * i) + j;
+	tmp = array[a];
+	array[a] = array[b];
+	array[b] = tmp;
+}
 
-	if (max != i)
+/**
+ * sift_down - order according binary distribution
+ * @array: pointer to array
+ * @root: actual size
+ * @bottom: actual position
+ * @size: total size
+ */
+void sift_down(int array[], int root, int bottom, size_t size)
+{
+	int maxChild = root * 2 + 1, otherChild;
+
+	if (maxChild < bottom)
 	{
-		aux = array[i];
-		array[i] = array[max];
-		array[max] = aux;
-		print_array(array, size);
-		heapify(array, size, max, s);
+		otherChild = maxChild + 1;
+		if (array[otherChild] > array[maxChild])
+			maxChild = otherChild;
+		else
+			maxChild = maxChild;
 	}
+	else
+	{
+		if (maxChild > bottom)
+			return;
+	}
+
+	if (array[root] >= array[maxChild])
+		return;
+
+	swap(array, root, maxChild);
+	print_array(array, size);
+	sift_down(array, maxChild, bottom, size);
 }
