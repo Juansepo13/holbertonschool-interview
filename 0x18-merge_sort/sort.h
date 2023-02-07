@@ -1,13 +1,11 @@
-#ifndef SORT_H
-#define SORT_H
+#ifndef _SORT_H_
+#define _SORT_H_
 
-#include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 
 void print_array(const int *array, size_t size);
 void merge_sort(int *array, size_t size);
-void Merge(int *array, int start, int middle, int end, int *copy);
-void Split(int *array, int start, int end, int *copy);
 
 #endif
