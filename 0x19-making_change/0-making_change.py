@@ -2,8 +2,6 @@
 """
 making_change
 """
-
-
 def makeChange(coins, total):
     """
     Making change method
