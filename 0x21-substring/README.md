@@ -1,1 +1,1 @@
-0x21 Sub String
+0x21 Sub String with concatenate words
